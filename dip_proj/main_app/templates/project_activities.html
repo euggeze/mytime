@@ -1,0 +1,171 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block import %}
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css'>
+  <link rel="stylesheet" href="{% static 'style_date.css' %}">
+  <link rel="stylesheet" href="{% static 'style_table.css' %}">
+  <link rel="stylesheet" href="{% static 'style_inout.css' %}">
+
+
+ {% endblock%}
+{% block selected_point %}
+    <div class="app-sidebar">
+      <a href="{% url 'mainpage_list_start' pk=pk %}" class="app-sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" /></svg>
+      </a>
+      <a href="{% url 'activities_page' pk=pk %}" class="app-sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-pie-chart" viewBox="0 0 24 24">
+          <defs />
+          <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
+        </svg>
+      </a>
+      <a href="{% url 'notification_page' pk=pk %}" class="app-sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" /></svg>
+      </a>
+      <a href="{% url 'settings' pk=pk %}" class="app-sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-settings" viewBox="0 0 24 24">
+          <defs />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+        </svg>
+      </a>
+    </div>
+    {% endblock %}
+{% block messagesection %}
+ <div class="messages-section">
+      <button class="messages-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="15" y1="9" x2="9" y2="15" />
+          <line x1="9" y1="9" x2="15" y2="15" /></svg>
+      </button>
+           <form method="get">
+      <div class="projects-section-header">
+        <p>Timesheet</p>
+        <a class="myform-a" onclick="click_week()"> <center>This week</center></a>
+        <a class="myform-a" onclick="click_2weeks()"> <center>Two weeks</center></a>
+        <a class="myform-a" onclick="click_month()"><center>Month</center></a>
+
+
+        <div class="input-field">
+          <label class='label'>From</label>
+          <input id="custom-input-date_from" class="calendar" type="text" name="start" placeholder="dd/mm/yyyy">
+          <p class="label-error"></p>
+        </div>
+        <div class="input-field">
+          <label class='label'>To</label>
+          <input id="custom-input-date_to" class="calendar" type="text" name="end" placeholder="dd/mm/yyyy">
+          <p class="label-error"></p>
+        </div>
+
+        <button class="myform-btn"> Search</button>
+
+        <p class="time"></p>
+        <p class="time"></p>
+        <button class="myform-btn" name="excel" value="excel"> <center><i class="fa fa-file-excel-o" aria-hidden="true"></i> Export to Excel</center></button>
+  </div>
+                     </form>
+<div class="user-section">
+           {% if pk != data_employee.user %}
+  Name: {{data_empl.first_name}}  {{data_empl.last_name}}<br>
+  Department: {{data_empl.department}}<br>
+  Position: {{data_empl.position}}<br>
+  Level: {{data_empl.level}}<br>
+  Status: {{data_empl.status}}<br>
+
+
+  {% endif %}
+    </div>
+      <div class="messages">
+        <table>
+          <thead>
+            <tr>
+              <th class="titleTopLockedCell">Activities</th>
+              {% for d in days %}
+              <th>{{d}}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            <tbody class="labels">
+              <tr>
+                <td colspan="100">
+                  <label for="accounting">Projects</label>
+                  <input type="checkbox" name="accounting" id="accounting" data-toggle="toggle">
+                </td>
+              </tr>
+            </tbody>
+
+            <tbody class="hide">
+            {% for pr in data_activities %}
+              <tr>
+                <td colspan="100">
+                  <input class="input" type="text" id="current_project" value="{{ pr.project }}" readonly>
+                  {% if pk == data_employee.user %}<a class="fa fa-plus" href="{% url 'task_create' pk=pr.project_id %}"></a> {% endif %}
+                </td>
+              </tr>
+
+                {% for task in pr.tasks %}
+                          <tr>
+                <td width="500px"><input value = "{{ task.task }}" width="400px" readonly>{% if pk == data_employee.user %} <a class="fa fa-pencil"
+                                                                                     aria-hidden="true" href="{% url 'task_edit' pk=task.task_id %}"></a>  
+                  <a class="fa fa-trash" aria-hidden="true" href="{% url 'task_delete' pk=task.task_id %}"></a>{% endif %}</td>
+
+
+                {% for date in task.data %}
+            <td class="valueCell" ><input value = "{{ date }}" readonly></td>
+
+            {% endfor %}
+                   </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tbody class="labels">
+              <tr>
+                <td colspan="100">
+                  <label for="management">Non projects</label>
+                  <input type="checkbox" name="management" id="management" data-toggle="toggle">
+                </td>
+              </tr>
+            </tbody>
+            <tbody class="hide">
+              <tr>
+                <td>Sick leave</td>
+                {% for x in sick_leave%}
+  <td>{{x}}</td>
+  {% endfor %}
+              </tr>
+              <tr>
+                <td>Paid leave</td>
+                {% for x in paid_leave%}
+  <td>{{x}}</td>
+  {% endfor %}
+              </tr>
+              <tr>
+                <td>Unpaid leave</td>
+                {% for x in unpaid_leave%}
+  <td>{{x}}</td>
+  {% endfor %}
+              </tr>
+<tr>
+                <td>Day off</td>
+  {% for x in day_off%}
+  <td>{{x}}</td>
+  {% endfor %}
+              </tr>
+            </tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+  <script  src="{% static 'script_date.js' %}"></script>
+{% endblock %}

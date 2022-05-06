@@ -1,0 +1,137 @@
+{% extends 'base_main.html' %}
+{% load static %}
+{% block selected_point %}
+    <div class="app-sidebar">
+      <a href="{% url 'mainpage_list_start' pk=pk %}" class="app-sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" /></svg>
+      </a>
+      <a href="{% url 'activities_page' pk=pk %}" class="app-sidebar-link">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-pie-chart" viewBox="0 0 24 24">
+          <defs />
+          <path d="M21.21 15.89A10 10 0 118 2.83M22 12A10 10 0 0012 2v10z" />
+        </svg>
+      </a>
+      <a href="{% url 'notification_page' pk=pk %}" class="app-sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" /></svg>
+      </a>
+      <a href="{% url 'settings' pk=pk %}"  class="app-sidebar-link active">
+        <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="feather feather-settings" viewBox="0 0 24 24">
+          <defs />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+        </svg>
+      </a>
+    </div>
+    {% endblock %}
+{% block messagesection %}
+<div class="messages-section">
+      <button class="messages-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="15" y1="9" x2="9" y2="15" />
+          <line x1="9" y1="9" x2="15" y2="15" /></svg>
+      </button>
+      <div class="projects-section-header">
+        <p>Settings</p>
+      </div>
+      <div class="messages">
+                  <div class="card-body">
+                      <div class="account-settings">
+                          <div class="user-profile">
+                              <div class="user-avatar">
+                                  <span class="change">Your photo</span>
+                                  {% if data_employee.photo %}
+          <img src="{{ data_employee.photo }}" />
+            {% else %}
+            <img src="{% static 'def_user.png' %}" />
+            {% endif %}
+                              </div>
+        <form method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+           <center> <input type="file" name="myfile"></center> <br>
+        <button name="submit_photo" class="btn btn-primary" value="True">Change photo</button>
+        </form>
+
+                          </div>
+
+                  </div>
+          </div>
+</div>
+</div>
+      
+<div class="projects-section">
+
+  <div class="project-boxes jsGridView">
+
+    <div class="card-body">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+          <span class="change">Personal Details</span>
+
+      <br>
+      </div>
+        <form method="POST" >
+            {% csrf_token %}
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+          <div class="form-group">
+              <label for="fullName">First name</label>
+              <input type="text" class="form-control" name="first_name" value="{{ data_employee.first_name }}">
+          </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+          <div class="form-group">
+              <label for="eMail">Last name</label>
+              <input type="text" class="form-control" name="last_name" value="{{ data_employee.last_name }}">
+          </div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+          <div class="form-group">
+              <label for="phone">Email</label>
+              <input type="email" class="form-control" name="email" value="{{ user_data.username }}">
+
+          </div>
+      </div>
+      <center>
+              <button name="submit_personal" class="btn btn-primary" value="True">Save</button>
+  </center>
+        </form>
+</div>
+<div class="card-body">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <span class="change">Work with access</span>
+        <br>
+      </div>
+{% load socialaccount %}
+      <center>
+        <a class="myform-a" href="{% url 'change_password' %}">Change password</a>
+            </center><br><br>
+    {% providers_media_js %}
+    {% get_social_accounts user as accounts %}
+    <center>
+        {% if accounts.google %}
+    <a href="{% provider_login_url 'google' process='connect'%}" class="google"><i class="fa fa-google"></i>     <span>Disconnect</span></a>
+            </center><br>
+    {% else %}
+    <center>
+            <a href="{% provider_login_url 'google' process='connect'%}" class="google"><i class="fa fa-google"></i>     <span>Connect</span></a>
+            </center><br>
+    {% endif %}
+    {% if accounts.github %}
+    <center>
+        <a href="{% provider_login_url 'github' process='connect' %}" class="github"><i class="fa fa-github"></i>     <span>Disconnect</span></a>
+            </center>
+    {% else %}
+            <center>
+        <a href="{% provider_login_url 'github' process='connect' %}" class="github"><i class="fa fa-github"></i>     <span>Connect</span></a>
+            </center>
+    {% endif %}
+
+</div>
+</div>
+</div>
+{% endblock %}

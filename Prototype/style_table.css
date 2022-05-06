@@ -1,0 +1,54 @@
+table { 
+	width: 95%;
+	border-collapse: collapse; 
+	margin:50px auto;
+	outline: 1px solid rgba(150,238,249);
+	font-size: 15px;
+	background: #fff!important;
+
+	}
+th {
+	font-weight: bold;
+	text-align: left;
+	border: none;
+	padding: 10px 15px;
+	background: rgba(150,238,249);
+	font-size: 16px;
+	border: 1px solid #dddddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	}
+
+td, th {
+	text-align: left;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	padding: 10px 15px;
+	font-size: 16px;
+border: 1px solid #dddddd;
+	vertical-align: top;
+
+	}
+
+table td input {
+  width: 70%;
+border: 1px solid #fff;
+}
+table label{
+	font-size: 18px;
+	font-weight: bold;
+  }
+table td i{
+  display: block;}
+.labels tr td {
+	background: rgba(189,238,249);
+	font-weight: bold;
+	color: #243249;
+}
+.label tr td label {
+	display: block;
+	pointer-events: none;
+}
+.task td{
+  background:rgb(232, 252, 255);
+}

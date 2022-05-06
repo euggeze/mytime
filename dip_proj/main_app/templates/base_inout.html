@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Sign up</title>
+    {% load static %}
+        <link rel="stylesheet" href="{% static 'style_inout.css' %}">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<section class="myform-area">
+              <div class="container">
+                  <div class="row justify-content-center">
+                      <div class="col-lg-8">
+                          <div class="form-area login-form">
+                              <div class="form-input">
+                                  {% block action %}
+                                    {% endblock %}
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+<!-- partial -->
+
+</body>
+</html>
