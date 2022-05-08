@@ -43,7 +43,7 @@ class MainPageTemplate(ListView):
         data['pk'] = user
         weekday = datetime.datetime.today().weekday()
         start = str(datetime.date.today() - datetime.timedelta(weekday))
-        finish = str(datetime.date.today() + datetime.timedelta(7 - weekday))
+        finish = str(datetime.date.today() + datetime.timedelta(6 - weekday))
         filter_query = '?start=' + start + '&finish=' + finish + '&pk=' + str(user)
         activities = requests.get(reverse('timesheet-list', request=self.request) + filter_query).json()
         project_list = requests.get(reverse('projectlist-list', request=self.request) + '?pk=' + str(user)).json()
