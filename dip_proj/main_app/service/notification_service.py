@@ -188,9 +188,9 @@ class VacationDec(UpdateView):
                                                                         args=[context["vacation"]["status_vacation"]])).json()[
                 "status_vacation"]
             context["vacation"]["employee"] = requests.get(reverse('employee-detail', request=self.request,
-                                                                        args=[user])).json()["first_name"] + " " +\
+                                                                        args=[vacation["employee"]])).json()["first_name"] + " " +\
             requests.get(reverse('employee-detail', request=self.request,
-                                 args=[user])).json()["last_name"]
+                                 args=[vacation["employee"]])).json()["last_name"]
             context["vac_status"]=requests.get(reverse('statusvacation-list', request=self.request)).json()
             print(vacation)
             return self.render_to_response(context)
