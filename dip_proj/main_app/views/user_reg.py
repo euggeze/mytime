@@ -36,15 +36,13 @@ def signup(request):
                         mail_subject, message, to=[to_email]
             )
             email.send()
-            photo = requests.get(reverse('employee-detail', request=request, args=[1])).json()["photo"]
             employee = {'user': user.pk,
                         'first_name': request.POST.get('first_name', None),
                         'last_name': request.POST.get('last_name', None),
                         'position': 'Employee',
                         'department': 1,
                         'status': 1,
-                        'level': 1,
-                        "photo":photo}
+                        'level': 1}
             requests.post(reverse('employee-list', request=request), data=employee)
             return render(request, 'confirm_email_start.html', {'form': form})
     else:
