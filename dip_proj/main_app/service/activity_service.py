@@ -171,7 +171,7 @@ class ActivityPageTemplate(ListView):
         for x in range(len(project_list)):
             actions.append({})
             actions[x].setdefault("project",project_list[x]["project"])
-            actions[x].setdefault("project_id", project_list[x]["id"])
+            actions[x].setdefault("project_id", project_list[x]["project"])
         for x in range(len(project_list)):
             actions[x].setdefault("tasks", [])
             all_tasks = []
