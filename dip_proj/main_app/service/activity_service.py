@@ -118,9 +118,9 @@ class ActivityPageTemplate(ListView):
         data['data_empl'] = employee
         data['data_empl']['department'] = requests.get(reverse('department-detail', request=self.request,
                                                               args=[data['data_empl']['department']])).json()["name"]
-        data['data_empl']['status'] = requests.get(reverse('department-detail', request=self.request,
+        data['data_empl']['status'] = requests.get(reverse('status-detail', request=self.request,
                              args=[data['data_empl']['status']])).json()["name"]
-        data['data_empl']['level'] = requests.get(reverse('department-detail', request=self.request,
+        data['data_empl']['level'] = requests.get(reverse('level-detail', request=self.request,
                              args=[data['data_empl']['level']])).json()["name"]
         data['today_is'] = str(datetime.datetime.now().strftime("%B")) + ", " + str(datetime.date.today().day)
         data['pk'] = self.kwargs["pk"]
