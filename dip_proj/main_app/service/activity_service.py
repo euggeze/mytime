@@ -44,12 +44,12 @@ def WriteToExcel(data):
         'valign': 'top',
         'border': 1
     })
-    title_text = f"Employee worksheet: {data['data_employee']['first_name']} {data['data_employee']['last_name']}"
+    title_text = f"Employee worksheet: {data['data_empl']['first_name']} {data['data_empl']['last_name']}"
     worksheet_s.merge_range('B2:H2', title_text, title)
     worksheet_s.write(4, 0, ugettext("Department"), header)
-    worksheet_s.write(4, 1, ugettext(data['data_employee']['department']), header)
+    worksheet_s.write(4, 1, ugettext(data['data_empl']['department']), header)
     worksheet_s.write(5, 0, ugettext("Status"), header)
-    worksheet_s.write(5, 1, ugettext(data['data_employee']['status']), header)
+    worksheet_s.write(5, 1, ugettext(data['data_empl']['status']), header)
     worksheet_s.write(6, 0, ugettext("Date from"), header)
     worksheet_s.write(6, 1, ugettext(data['first_day']), header)
     worksheet_s.write(7, 0, ugettext("Date to"), header)
