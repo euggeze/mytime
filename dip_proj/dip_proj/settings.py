@@ -184,5 +184,5 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-DROPBOX_OAUTH2_TOKEN = 'sl.BHXg0BiglTTR_Kp3uUb6hiQBBBpzCHsPemSpCMtgZ1DG82NJnJLWHTjj9cTVheDNt4ShaDm82lKOAVi21dP7JqQDLZml_xmYJuY0pyeOYRFnychBsxR0hG8xJdNnnh_lvg7Tnyo'
+DROPBOX_OAUTH2_TOKEN = 'sl.BHW_xuL9K7L7UzWYVjF8_XZZKZBQXoZoOJXuWTiOzv_7cEXh6xl56mO4M2wE_zTCI1wnPSS0OLrD6TPsbeixBZfJkqmmYnIgdFlKeU1QyexGvKPeW0Hg3hhlhu3GZOSpP67_bvQ'
 DROPBOX_ROOT_PATH = '/folder'
