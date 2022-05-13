@@ -57,34 +57,44 @@ def WriteToExcel(data):
     worksheet_s.set_column('A:A', 25)
     worksheet_s.set_column('B:B', 15)
     worksheet_s.write(10, 0, "Activities", table)
-    for x in range(len(data['days'])):
-        worksheet_s.write(10, x+1,data['days_d'][x],table)
     a = 11
+    worksheet_s.write(a, 0, ugettext("Project"), title_table)
+    worksheet_s.write(a, 1, ugettext("Reported time"), title_table)
     for x in range(len(data["data_activities"])):
-        worksheet_s.write(a, 0, data['data_activities'][x]["project"], title_table)
-        a+=1
+        a += 1
+        worksheet_s.write(a, 0, data['data_activities'][x]["project"], table)
+        reported_time = 0
         for y in range(len(data["data_activities"][x]["tasks"])):
-            worksheet_s.write(a, 0, data['data_activities'][x]["tasks"][y]["task"], table)
             for z in range(len(data["data_activities"][x]["tasks"][y]["data"])):
-                worksheet_s.write(a, z+1, data['data_activities'][x]["tasks"][y]["data"][z], table)
-            a+=1
-    worksheet_s.write(a, 0, "Non project activities", title_table)
-    a+=1
-    worksheet_s.write(a, 0, "Sick leave", table)
-    for x in range(len(data["sick_leave"])):
-        worksheet_s.write(a, x + 1, data["sick_leave"][x], table)
+                if data['data_activities'][x]["tasks"][y]["data"][z] != '-':
+                    reported_time += int(data['data_activities'][x]["tasks"][y]["data"][z])
+        worksheet_s.write(a, 1, str(reported_time), table)
     a += 1
-    worksheet_s.write(a, 0, "Paid leave", table)
-    for x in range(len(data["paid_leave"])):
-        worksheet_s.write(a, x + 1, data["paid_leave"][x], table)
-    a += 1
-    worksheet_s.write(a, 0, "Unpaid leave", table)
-    for x in range(len(data["unpaid_leave"])):
-        worksheet_s.write(a, x + 1, data["unpaid_leave"][x], table)
-    a += 1
-    worksheet_s.write(a, 0, "Day off", table)
-    for x in range(len(data["day_off"])):
-        worksheet_s.write(a, x + 1, data["day_off"][x], table)
+    worksheet_s.write(a, 0, "Vacation", title_table)
+    worksheet_s.write(a, 1, "Date from", title_table)
+    worksheet_s.write(a, 2, "Date to", title_table)
+    a += 2
+    for x in data["vacations"]:
+        if x["type_vacation"] == 1:
+            worksheet_s.write(a, 0, "Sick leave", table)
+            worksheet_s.write(a, 1, ugettext(x['start_date']), table)
+            worksheet_s.write(a, 2, ugettext(x['finish_date']), table)
+            a += 1
+        elif x["type_vacation"] == 2:
+            worksheet_s.write(a, 0, "Paid leave", table)
+            worksheet_s.write(a, 1, ugettext(x['start_date']), table)
+            worksheet_s.write(a, 2, ugettext(x['finish_date']), table)
+            a += 1
+        elif x["type_vacation"] == 3:
+            worksheet_s.write(a, 0, "Unpaid leave", table)
+            worksheet_s.write(a, 1, ugettext(x['start_date']), table)
+            worksheet_s.write(a, 2, ugettext(x['finish_date']), table)
+            a += 1
+        elif x["type_vacation"] == 4:
+            worksheet_s.write(a, 0, "Day off", table)
+            worksheet_s.write(a, 1, ugettext(x['start_date']), table)
+            worksheet_s.write(a, 2, ugettext(x['finish_date']), table)
+            a += 1
     a += 1
     workbook.close()
     xlsx_data = output.getvalue()
@@ -226,6 +236,8 @@ class ActivityPageTemplate(ListView):
         if excel:
             response = HttpResponse(content_type='application/vnd.ms-excel')
             response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
+            context["vacations"] = requests.get(reverse('vacation-list', request=self.request)+"?employee="+str(self.kwargs['pk'])).json()
+
             context["data_employee"]["department"] = requests.get(reverse('department-detail', request=self.request,
                                                               args=[context["data_employee"]["department"]])).json()["name"]
             context["data_employee"]["status"] = requests.get(reverse('status-detail', request=self.request,
