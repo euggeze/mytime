@@ -176,12 +176,45 @@ class ActivityPageTemplate(ListView):
         for x in range(len(activities)):
             data.add(activities[x]["task"])
         actions = []
+        time_unreported = 0
+        working_time = 0
+        for x in weekdates:
+            if x.weekday() < 5:
+                working_time += 8
+        unpaid_leave = ["-" for x in range(len(weekdates))]
+        day_off = ["-" for x in range(len(weekdates))]
+        paid_leave = ["-" for x in range(len(weekdates))]
+        sick_leave = ["-" for x in range(len(weekdates))]
+        proj = requests.get(reverse('project-list', request=self.request) + "?proj=EPAM").json()[0]["id"]
         for x in range(len(activities)):
                 activities[x]["task_date"] = weekdates.get_loc(activities[x]["task_date"])
+        for z in range(len(activities)):
+            if activities[z]["project"] == proj:
+                time_unreported += 8
+                if activities[z]["task"] == \
+                        requests.get(reverse('task-list', request=self.request) + "?task=Unpaid leave").json()[0]["id"]:
+                    unpaid_leave[activities[z]["task_date"]] = activities[z]["task_time"]
+                elif activities[z]["task"] == \
+                        requests.get(reverse('task-list', request=self.request) + "?task=Day off").json()[0]["id"]:
+                    day_off[activities[z]["task_date"]] = activities[z]["task_time"]
+                elif activities[z]["task"] == \
+                        requests.get(reverse('task-list', request=self.request) + "?task=Paid leave").json()[0]["id"]:
+                    paid_leave[activities[z]["task_date"]] = activities[z]["task_time"]
+                elif activities[z]["task"] == \
+                        requests.get(reverse('task-list', request=self.request) + "?task=Sick leave").json()[0]["id"]:
+                    sick_leave[activities[z]["task_date"]] = activities[z]["task_time"]
+        context.setdefault('unpaid_leave', unpaid_leave)
+        context.setdefault('day_off',day_off)
+        context.setdefault('paid_leave',paid_leave)
+        context.setdefault('sick_leave',sick_leave)
         for x in range(len(project_list)):
             actions.append({})
             actions[x].setdefault("project",project_list[x]["project"])
             actions[x].setdefault("project_id", project_list[x]["project"])
+            actions[x].setdefault("workload", round(project_list[x]["workload"]*(working_time-time_unreported)))
+            actions[x].setdefault("reported", 0)
+
+
         for x in range(len(project_list)):
             actions[x].setdefault("tasks", [])
             all_tasks = []
@@ -194,30 +227,12 @@ class ActivityPageTemplate(ListView):
                             actions[x]["tasks"][-1].setdefault("task_id", y)
                             actions[x]["tasks"][-1].setdefault("data", ["-" for x in range(len(weekdates))])
                         all_tasks = [actions[x]["tasks"][o]["task"] for o in range(len(actions[x]["tasks"]))]
-        unpaid_leave = ["-" for x in range(len(weekdates))]
-        day_off = ["-" for x in range(len(weekdates))]
-        paid_leave = ["-" for x in range(len(weekdates))]
-        sick_leave = ["-" for x in range(len(weekdates))]
-        proj = requests.get(reverse('project-list', request=self.request) + "?proj=EPAM").json()[0]["id"]
-        for z in range(len(activities)):
-            if activities[z]["project"] == proj:
-                if activities[z]["task"] == requests.get(reverse('task-list', request=self.request)+"?task=Unpaid leave").json()[0]["id"]:
-                    unpaid_leave[activities[z]["task_date"]] = activities[z]["task_time"]
-                elif activities[z]["task"] == requests.get(reverse('task-list', request=self.request)+"?task=Day off").json()[0]["id"]:
-                    day_off[activities[z]["task_date"]] = activities[z]["task_time"]
-                elif activities[z]["task"] == requests.get(reverse('task-list', request=self.request)+"?task=Paid leave").json()[0]["id"]:
-                    paid_leave[activities[z]["task_date"]] = activities[z]["task_time"]
-                elif activities[z]["task"] == requests.get(reverse('task-list', request=self.request)+"?task=Sick leave").json()[0]["id"]:
-                    sick_leave[activities[z]["task_date"]] = activities[z]["task_time"]
-        context.setdefault('unpaid_leave', unpaid_leave)
-        context.setdefault('day_off',day_off)
-        context.setdefault('paid_leave',paid_leave)
-        context.setdefault('sick_leave',sick_leave)
         for x in range(len(project_list)):
             for y in range(len(activities)):
                 for z in range(len(actions[x]["tasks"])):
                     if actions[x]["tasks"][z]["task"] == activities[y]["task"] and activities[y]["task_time"]>0:
                         actions[x]["tasks"][z]["data"][activities[y]["task_date"]] = activities[y]["task_time"]
+                        actions[x]["reported"] += int(activities[y]["task_time"])
         for x in range(len(project_list)):
             actions[x]["project"] = requests.get(reverse('project-detail', request=self.request,
                                                               args=[project_list[x]["project"]])).json()["project_name"]
@@ -246,6 +261,7 @@ class ActivityPageTemplate(ListView):
             xlsx_data = WriteToExcel(context)
             response.write(xlsx_data)
             return response
+
         print(context["data_activities"])
         return self.render_to_response(context)
 

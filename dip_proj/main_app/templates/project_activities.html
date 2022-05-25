@@ -86,7 +86,10 @@
         <table>
           <thead>
             <tr>
-              <th class="titleTopLockedCell">Activities</th>
+              <th class="titleTopLockedCell" width="500px">Activities</th>
+              <th>Workload</th>
+              <th>Σ</th>
+              <th> </th>
               {% for d in days %}
               <th>{{d}}</th>
               {% endfor %}
@@ -105,19 +108,25 @@
             <tbody class="hide">
             {% for pr in data_activities %}
               <tr>
-                <td colspan="100">
-                  <input class="input" type="text" id="current_project" value="{{ pr.project }}" readonly>
+                <td>
+                  {{ pr.project }}
                   {% if pk == data_employee.user %}<a class="fa fa-plus" href="{% url 'task_create' pk=pr.project_id %}"></a> {% endif %}
                 </td>
+                <td> {{pr.workload}}h</td>
+              <td> {{pr.reported}}h</td>
+              <td> </td>
               </tr>
 
                 {% for task in pr.tasks %}
+
                           <tr>
                 <td width="500px"><input value = "{{ task.task }}" width="400px" readonly>{% if pk == data_employee.user %} <a class="fa fa-pencil"
                                                                                      aria-hidden="true" href="{% url 'task_edit' pk=task.task_id %}"></a>  
                   <a class="fa fa-trash" aria-hidden="true" href="{% url 'task_delete' pk=task.task_id %}"></a>{% endif %}</td>
 
-
+              <td> </td>
+              <td> </td>
+              <td> </td>
                 {% for date in task.data %}
             <td class="valueCell" ><input value = "{{ date }}" readonly></td>
 
@@ -137,24 +146,36 @@
             <tbody class="hide">
               <tr>
                 <td>Sick leave</td>
+                <td> </td>
+              <td> </td>
+              <td> </td>
                 {% for x in sick_leave%}
   <td>{{x}}</td>
   {% endfor %}
               </tr>
               <tr>
                 <td>Paid leave</td>
+                <td> </td>
+              <td> </td>
+              <td> </td>
                 {% for x in paid_leave%}
   <td>{{x}}</td>
   {% endfor %}
               </tr>
               <tr>
                 <td>Unpaid leave</td>
+                <td> </td>
+              <td> </td>
+              <td> </td>
                 {% for x in unpaid_leave%}
   <td>{{x}}</td>
   {% endfor %}
               </tr>
 <tr>
                 <td>Day off</td>
+  <td> </td>
+              <td> </td>
+              <td> </td>
   {% for x in day_off%}
   <td>{{x}}</td>
   {% endfor %}
